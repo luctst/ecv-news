@@ -6,7 +6,7 @@ import FormNews from "./components/FormNews";
 	if (window.location.pathname === "/" || window.location.pathname === "/inscription") return Auth(root, window.location.pathname);
 
 	// Secure routes
-	if (sessionStorage.getItem("useToken")) {
+	if (sessionStorage.getItem("userToken")) {
 		if (window.location.pathname === "/news") {
 			Header(root)
 			return FormNews(root)
