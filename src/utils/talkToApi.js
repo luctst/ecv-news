@@ -31,13 +31,12 @@ export default function (route, method, data = {}) {
 	} else {
 		headers = {
 			...data.headers,
-			Accept: 'application/json',
-			'Content-Type': 'application/json;charset=utf-8'
+			'Content-Type': 'application/json'
 		}
 	}
 
 	return fetch(data.useCustomRoute ? route : `https://newsapp.dwsapp.io/api/news${route}`, {
-		method: method,
+		method: method.toUpperCase(),
 		headers: { ...headers },
 		body: data.body && JSON.stringify(data.body)
 	})
