@@ -1,5 +1,4 @@
 import talkToApi from "../utils/talkToApi";
-import customFetch from "../utils/customFetch";
 
 export default (element, route) => {
 	const state = {
@@ -10,6 +9,9 @@ export default (element, route) => {
 	if (sessionStorage.getItem("userToken")) {
 		return talkToApi("https://newsapp.dwsapp.io/api/me", "post", {
 			useCustomRoute: true,
+			headers: {
+				"content-type": "application/json"
+			},
 			body: {
 				token: sessionStorage.getItem("userToken")
 			}
@@ -113,6 +115,9 @@ export default (element, route) => {
 
 				return talkToApi("https://newsapp.dwsapp.io/api/register", "post", {
 					useCustomRoute: true,
+					headers: {
+						"content-type": "application/json"
+					},
 					body: {
 						email: mail.value,
 						password: password.value,
@@ -121,24 +126,51 @@ export default (element, route) => {
 					}
 				})
 				.then(result => {
-					console.log(result);
+					if (result.err === null) {
+						return talkToApi("https://newsapp.dwsapp.io/api/login", "post", {
+							useCustomRoute: true,
+							headers: {
+								"content-type": "application/json"
+							},
+							body: {
+								email: mail.value,
+								password: password.value
+							}
+						})
+					}
+
+					element.innerHTML = "";
+					state.error = true;
+					state.msg = result.message
+					return render();
+				})
+				.then(userData => {
+					sessionStorage.setItem("userToken", userData.data.token);
+					window.location.href = window.location.origin+"/news";
 				})
 			}
 
-			return new customFetch("https://newsapp.dwsapp.io/api/login", "post", {
-				email: mail.value,
-				password: password.value
-			})
-			.sendRequest()
-			.then(jsonData => console.log(jsonData));
 			return talkToApi("https://newsapp.dwsapp.io/api/login", "post", {
 				useCustomRoute: true,
+				headers: {
+					"content-type": "application/json"
+				},
 				body: {
 					email: mail.value,
 					password: password.value
 				}
 			})
-			.then(result => console.log(result));
+			.then(result => {
+				if (result.err === null) {
+					sessionStorage.setItem("userToken", result.data.token);
+					window.location.href = window.location.origin+"/news";
+				}
+
+				element.innerHTML = "";
+				state.error = true;
+				state.msg = result.message;
+				return render();
+			});
 		})
 	};
 
