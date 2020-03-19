@@ -11,15 +11,15 @@ export default (element, data) => {
 			<div class="row">
 				<div class="col-12 card-wrapper"></div>
 			</div>
-		`
+		`;
 
-		element.appendChild(section)
+		element.appendChild(section);
 		const cardwrapper = document.querySelector(".card-wrapper");
 		cardwrapper.style = "display:flex;flex-wrap:wrap;justify-content:space-between;";
 
 		data.map(article => {
 			const div = document.createElement("div");
-			div.classList.add("card")
+			div.classList.add("card");
 			div.style = "width:32%;margin: 4% 0;";
 
 			div.innerHTML = `
@@ -32,8 +32,8 @@ export default (element, data) => {
 			`;
 
 			cardwrapper.appendChild(div);
-		})
+		});
 	}
 
-	return render()
-}
+	return render();
+};

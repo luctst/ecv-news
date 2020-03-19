@@ -1,6 +1,6 @@
 export default element => {
 	function render(element) {
-		const header = document.createElement('header');
+		const header = document.createElement("header");
 		header.setAttribute("class", "container mt-3");
 		header.innerHTML = `
         <div class="row">
@@ -8,11 +8,11 @@ export default element => {
                 <h1 class="display-5">News</h1>
 			</div>
 			${
-				sessionStorage.getItem("userToken") ?
-					`<div class="col-3 d-flex align-items-center justify-content-end">
+				sessionStorage.getItem("userToken")
+					? `<div class="col-3 d-flex align-items-center justify-content-end">
 						<small class="text-danger" id="disconnect">Disconnect</small>
 					</div>`
-				: ""
+					: ""
 			}
         </div>
         `;
@@ -21,10 +21,10 @@ export default element => {
 		if (document.querySelector("#disconnect")) {
 			document.querySelector("#disconnect").addEventListener("click", () => {
 				sessionStorage.clear();
-				window.location.href = window.location.origin+"/";
+				window.location.href = window.location.origin + "/";
 			});
 		}
 	}
 
-	return render(element)
-}
+	return render(element);
+};

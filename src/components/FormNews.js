@@ -11,25 +11,26 @@ export default element => {
 			body: {
 				token: sessionStorage.getItem("userToken")
 			}
-		})
-			.then(result => {
-				if (result.err === null) return talkToApi("/sources").then(result => render(result));
+		}).then(result => {
+			if (result.err === null)
+				return talkToApi("/sources").then(result => render(result));
 
-				element.innerHTML = "";
-				state.error = true;
-				state.msg = result.message;
-				return render();
-			});
+			element.innerHTML = "";
+			state.error = true;
+			state.msg = result.message;
+			return render();
+		});
 	}
 
-	function createCards (rootElement, selectValue, searchValue) {
-		return talkToApi(`/${selectValue}/${searchValue === "" ? null : searchValue}`)
-		.then(result => Cards(rootElement, result.data.articles))
+	function createCards(rootElement, selectValue, searchValue) {
+		return talkToApi(
+			`/${selectValue}/${searchValue === "" ? null : searchValue}`
+		).then(result => Cards(rootElement, result.data.articles));
 	}
 
 	function render(dataApi) {
-		const form = document.createElement("form")
-		form.classList.add("container", "rounded", "border", "border-primary", "mt-4")
+		const form = document.createElement("form");
+		form.classList.add("container", "rounded", "border", "border-primary", "mt-4");
 
 		form.innerHTML = `
 		<div class="row p-3">
@@ -47,37 +48,29 @@ export default element => {
 		`;
 
 		// First create the new form html tag to be able to manipulate his data.
-		element.appendChild(form)
+		element.appendChild(form);
 
-		const journal = document.querySelector("select")
-		const search = document.querySelector("input")
+		const journal = document.querySelector("select");
+		const search = document.querySelector("input");
 
 		// add listener
 		journal.addEventListener("change", e => {
-			return createCards(
-				element,
-				e.target.value,
-				document.querySelector("input").value
-			);
-		})
+			return createCards(element, e.target.value, document.querySelector("input").value);
+		});
 
 		search.addEventListener("input", e => {
-			return createCards(
-				element,
-				document.querySelector("select").value,
-				e.target.value
-			)
-		})
+			return createCards(element, document.querySelector("select").value, e.target.value);
+		});
 
 		// Return newspaepper in <select></select>
 		dataApi.data.sources.map(i => {
-			const option = document.createElement("option")
+			const option = document.createElement("option");
 
-			option.textContent = i.id
-			journal.appendChild(option)
-		})
+			option.textContent = i.id;
+			journal.appendChild(option);
+		});
 
 		// Call Cards function who return Cards components
-		createCards(element, journal.value, search.value)
+		createCards(element, journal.value, search.value);
 	}
-}
+};

@@ -8,38 +8,43 @@
  * @param {Object} [data.headers = {}] - An object that will be used as request header cannot contains `Accept, content-type, x-waveup-mobile, x-waveup-version`.
  * @param {Object} [data.body = {}] - Object with data to pass in the body request should be a javascript object and not a JSON object.
  */
-export default function (route, method, data = {}) {
+export default function(route, method, data = {}) {
 	if (!route) {
-		return console.error(new Error('You should enter a route to fetch').message)
+		return console.error(new Error("You should enter a route to fetch").message);
 	} else {
-		typeof route !== 'string' && console.error(new Error('The route parameter should be a string.').message)
+		typeof route !== "string" &&
+			console.error(new Error("The route parameter should be a string.").message);
 	}
 
 	if (method) {
-		typeof method !== 'string' && console.error(new Error('Method should be a string').message)
+		typeof method !== "string" &&
+			console.error(new Error("Method should be a string").message);
 
-		if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method.toUpperCase())) {
-			return console.error(new Error(`The ${method} is not available for now.`).message)
+		if (!["GET", "POST", "PUT", "DELETE"].includes(method.toUpperCase())) {
+			return console.error(new Error(`The ${method} is not available for now.`).message);
 		}
 	} else {
-		method = 'GET'
+		method = "GET";
 	}
 
-	let headers
+	let headers;
 	if (data.useCustomRoute) {
-		headers = { ...data.headers }
+		headers = { ...data.headers };
 	} else {
 		headers = {
 			...data.headers,
-			'Content-Type': 'application/json'
-		}
+			"Content-Type": "application/json"
+		};
 	}
 
-	return fetch(data.useCustomRoute ? route : `https://newsapp.dwsapp.io/api/news${route}`, {
-		method: method.toUpperCase(),
-		headers: { ...headers },
-		body: data.body && JSON.stringify(data.body)
-	})
+	return fetch(
+		data.useCustomRoute ? route : `https://newsapp.dwsapp.io/api/news${route}`,
+		{
+			method: method.toUpperCase(),
+			headers: { ...headers },
+			body: data.body && JSON.stringify(data.body)
+		}
+	)
 		.then(res => res.json())
-		.then(dataParsed => dataParsed)
+		.then(dataParsed => dataParsed);
 }
