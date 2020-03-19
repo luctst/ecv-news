@@ -2,15 +2,29 @@ import talkToApi from "../utils/talkToApi";
 import Cards from "./Cards";
 
 export default element => {
-	talkToApi("/sources")
-	.then(result => render(result))
+	if (sessionStorage.getItem("userToken")) {
+		return talkToApi("https://newsapp.dwsapp.io/api/me", "post", {
+			useCustomRoute: true,
+			headers: {
+				"content-type": "application/json"
+			},
+			body: {
+				token: sessionStorage.getItem("userToken")
+			}
+		})
+			.then(result => {
+				if (result.err === null) return talkToApi("/sources").then(result => render(result));
+
+				element.innerHTML = "";
+				state.error = true;
+				state.msg = result.message;
+				return render();
+			});
+	}
 
 	function createCards (rootElement, selectValue, searchValue) {
-		talkToApi(`/${selectValue}/${searchValue === "" ? null : searchValue}`)
-		.then(result => {
-			console.log(result)
-			return Cards(rootElement, result.data.articles)
-		})
+		return talkToApi(`/${selectValue}/${searchValue === "" ? null : searchValue}`)
+		.then(result => Cards(rootElement, result.data.articles))
 	}
 
 	function render(dataApi) {
@@ -40,11 +54,19 @@ export default element => {
 
 		// add listener
 		journal.addEventListener("change", e => {
-			return createCards(element, e.target.value, search.value);
+			return createCards(
+				element,
+				e.target.value,
+				document.querySelector("input").value
+			);
 		})
 
 		search.addEventListener("input", e => {
-			console.log(e.target.value)
+			return createCards(
+				element,
+				document.querySelector("select").value,
+				e.target.value
+			)
 		})
 
 		// Return newspaepper in <select></select>
