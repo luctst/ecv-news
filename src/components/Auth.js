@@ -31,8 +31,8 @@ export default (element, route) => {
 				<div class="col-12 p-5 rounded border ${state.error ? "border-danger" : "bordeprimary"}">
 				${
 					state.error
-						? `<div class="form-group bg-danger rounded">
-						<p class="p-1 text-light">${state.msg}</p>
+						? `<div class="form-group bg-danger rounded p-2">
+						<p class="text-light" style="margin:0;">${state.msg}</p>
 					</div>`
 						: ""
 				}
