@@ -5,6 +5,7 @@ const htmlPlugin = require("html-webpack-plugin")
 const terser = require("terser-webpack-plugin")
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin")
 const webpackPWA = require("webpack-pwa-manifest")
+const webpackDotenv = require("dotenv-webpack");
 
 module.exports = {
     target: 'web',
@@ -15,9 +16,9 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "js/[name].[hash].bundle.js"
 	},
-	node: {
-		fs: "empty"
-	},
+	// node: {
+	// 	fs: "empty"
+	// },
     optimization: {
         splitChunks: {
             chunks: "all"
@@ -79,6 +80,7 @@ module.exports = {
         ]
     },
     plugins: [
+		new webpackDotenv(),
         new htmlPlugin({
             inject: true,
 			template: "./public/index.html",
