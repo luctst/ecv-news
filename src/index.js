@@ -1,3 +1,4 @@
+require("dotenv").config();
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import FormNews from "./components/FormNews";
