@@ -14,7 +14,10 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "js/[name].[hash].bundle.js"
-    },
+	},
+	node: {
+		fs: "empty"
+	},
     optimization: {
         splitChunks: {
             chunks: "all"
