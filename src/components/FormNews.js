@@ -13,7 +13,11 @@ export default element => {
 			}
 		}).then(result => {
 			if (result.err === null)
-				return talkToApi("/sources").then(result => render(result));
+				return talkToApi("/sources", "GET", {
+					body: {
+						news_api_token: process.env.API_KEY
+					}
+				}).then(result => render(result));
 
 			element.innerHTML = "";
 			state.error = true;
