@@ -13,7 +13,10 @@ export default element => {
 			}
 		}).then(result => {
 			if (result.err === null)
-				return talkToApi("/sources", "GET", {
+				return talkToApi("/sources", "POST", {
+					headers: {
+						"content-type": "application/json"
+					},
 					body: {
 						news_api_token: process.env.API_KEY
 					}
@@ -28,7 +31,13 @@ export default element => {
 
 	function createCards(rootElement, selectValue, searchValue) {
 		return talkToApi(
-			`/${selectValue}/${searchValue === "" ? null : searchValue}`
+			`/${selectValue}/${searchValue === "" ? null : searchValue}`,
+			"POST",
+			{
+				body: {
+					news_api_token: process.env.API_KEY
+				}
+			}
 		).then(result => Cards(rootElement, result.data.articles));
 	}
 
