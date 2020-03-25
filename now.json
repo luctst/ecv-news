@@ -1,4 +1,9 @@
 {
+	"build": {
+		"env": {
+			"API_KEY": "@newsapi"
+		}
+	},
 	"rewrites": [
 		{
 			"source": "/(.*)",
