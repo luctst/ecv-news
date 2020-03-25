@@ -127,6 +127,6 @@ module.exports = env => {
 				}
 			]
 		},
-		plugins: [...defaultPugins, ...pluginsDev]
+		plugins: env.mode === "development" ? [...defaultPugins, ...pluginsDev] : [...defaultPugins]
 	};
 }
