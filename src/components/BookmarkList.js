@@ -1,6 +1,6 @@
 import talkToApi from "../utils/talkToApi";
 
-export default (element) => {
+export default element => {
 	talkToApi("https://newsapp.dwsapp.io/api/me", "POST", {
 		useCustomRoute: true,
 		headers: {
@@ -9,12 +9,15 @@ export default (element) => {
 		body: {
 			token: sessionStorage.getItem("userToken")
 		}
-	})
-	.then(result => {
+	}).then(result => {
 		if (result.err === null) return render(result.data.bookmark);
 	});
 
 	function render(data) {
+		if (element.querySelector("section")) {
+			element.removeChild(element.querySelector("section"));
+		}
+
 		const section = document.createElement("section");
 		section.classList.add("container");
 
@@ -28,7 +31,13 @@ export default (element) => {
 
 		data.map((bookmark, index) => {
 			const article = document.createElement("article");
-			article.classList.add("border", "rounded-left", "border-dark", `${index === 0 && "mt-4"}`, "p-2");
+			article.classList.add(
+				"border",
+				"rounded-left",
+				"border-dark",
+				`${index === 0 && "mt-4"}`,
+				"p-2"
+			);
 
 			article.innerHTML = `
 				<h2 style="font-size:1.1rem;">${bookmark.name}</h2>
@@ -40,7 +49,7 @@ export default (element) => {
 			`;
 
 			document.querySelector(".bookmark-list").appendChild(article);
-			document.querySelector(`.bk-${index}`).addEventListener("click", function () {
+			document.querySelector(`.bk-${index}`).addEventListener("click", function() {
 				talkToApi(`https://newsapp.dwsapp.io/api/bookmark/${bookmark._id}`, "delete", {
 					useCustomRoute: true,
 					headers: {
@@ -49,19 +58,17 @@ export default (element) => {
 					body: {
 						token: sessionStorage.getItem("userToken")
 					}
-				})
-				.then(result => {
+				}).then(result => {
 					if (result.err === null) {
-						const newData = data.map(oldList => {
-							if (oldList._id === result.data._id) {
-								data.splice(data[oldList], 1);
-							};
-						});
-
-						return render(newData);
+						data.map(
+							oldBkItem =>
+								oldBkItem._id === result.data._id &&
+								data.splice(data.indexOf(oldBkItem), 1)
+						);
+						return render(data);
 					}
 				});
 			});
 		});
-	};
-}
+	}
+};
