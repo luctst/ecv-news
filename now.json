@@ -1,4 +1,10 @@
 {
+	"builds": [
+		{
+			"src": "package.json",
+			"use": "@now/static-build"
+		}
+	],
 	"build": {
 		"env": {
 			"API_KEY": "@newsapi"
