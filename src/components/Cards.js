@@ -35,7 +35,7 @@ export default (element, data) => {
 			`;
 
 			cardwrapper.appendChild(div);
-			document.querySelector(`.article-${index}`).addEventListener("click", function (e) {
+			document.querySelector(`.article-${index}`).addEventListener("click", function(e) {
 				talkToApi("https://newsapp.dwsapp.io/api/bookmark/", "post", {
 					useCustomRoute: true,
 					headers: {
@@ -51,8 +51,7 @@ export default (element, data) => {
 						country: "us",
 						token: sessionStorage.getItem("userToken")
 					}
-				})
-				.then(result => {
+				}).then(result => {
 					if (result.err === null) {
 						return Snackbar(false, `${article.author} ajouté aux favoris`, e.pageY);
 					}

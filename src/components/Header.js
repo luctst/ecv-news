@@ -5,7 +5,8 @@ export default element => {
 		header.innerHTML = `
         <div class="row">
             <div class="col-9 d-flex align-items-center">
-                <h1 class="display-5">News</h1>
+                <h1 class="display-5"><a href="${window.location.origin +
+									"/"}">News</a></h1>
 			</div>
 			${
 				sessionStorage.getItem("userToken")
