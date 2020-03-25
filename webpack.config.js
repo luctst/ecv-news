@@ -8,6 +8,56 @@ const webpackPWA = require("webpack-pwa-manifest")
 const webpackDotenv = require("dotenv-webpack");
 
 module.exports = env => {
+	const defaultPugins = [
+		new htmlPlugin({
+			inject: true,
+			template: "./public/index.html",
+			minify: {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeRedundantAttributes: true,
+				useShortDoctype: true,
+				removeEmptyAttributes: true,
+				removeStyleLinkTypeAttributes: true,
+				removeScriptTypeAttributes: true,
+				keepClosingSlash: true,
+				minifyJS: true,
+				minifyCSS: true,
+				minifyURLs: true
+			}
+		}),
+		new ScriptExtHtmlWebpackPlugin({
+			prefetch: [/\.js$/],
+			defaultAttribute: 'async'
+		}),
+		new useScss({
+			filename: "style.css"
+		}),
+		new webpackFriendlyMessage({
+			compilationSuccessInfo: {
+				messages: ['You application is running here http://localhost:8080']
+			},
+		}),
+		new webpackPWA({
+			name: 'Hello World',
+			short_name: 'Hello World',
+			description: 'Your PWA App',
+			theme_color: '#212121',
+			background_color: '#212121',
+			icons: [
+				{
+					src: path.resolve('public/favicon.png'),
+					sizes: [36, 48, 72, 96, 144, 192, 512],
+					ios: true
+				}
+			]
+		})
+	]
+
+	const pluginsDev = [
+		new webpackDotenv()
+	]
+
 	return {
 		target: 'web',
 		entry: {
@@ -77,51 +127,6 @@ module.exports = env => {
 				}
 			]
 		},
-		plugins: [
-			env.mode === "development" && new webpackDotenv(),
-			new htmlPlugin({
-				inject: true,
-				template: "./public/index.html",
-				minify: {
-					removeComments: true,
-					collapseWhitespace: true,
-					removeRedundantAttributes: true,
-					useShortDoctype: true,
-					removeEmptyAttributes: true,
-					removeStyleLinkTypeAttributes: true,
-					removeScriptTypeAttributes: true,
-					keepClosingSlash: true,
-					minifyJS: true,
-					minifyCSS: true,
-					minifyURLs: true
-				}
-			}),
-			new ScriptExtHtmlWebpackPlugin({
-				prefetch: [/\.js$/],
-				defaultAttribute: 'async'
-			}),
-			new useScss({
-				filename: "style.css"
-			}),
-			new webpackFriendlyMessage({
-				compilationSuccessInfo: {
-					messages: ['You application is running here http://localhost:8080']
-				},
-			}),
-			new webpackPWA({
-				name: 'Hello World',
-				short_name: 'Hello World',
-				description: 'Your PWA App',
-				theme_color: '#212121',
-				background_color: '#212121',
-				icons: [
-					{
-						src: path.resolve('public/favicon.png'),
-						sizes: [36, 48, 72, 96, 144, 192, 512],
-						ios: true
-					}
-				]
-			})
-		]
+		plugins: env.mode === "development" ? [...defaultPugins, ...pluginsDev] : [...defaultPugins]
 	};
 }
