@@ -33,7 +33,8 @@
 
 
 ## Install 🐙
-Install all dependencies `npm install` and run `npm start`
+Install all dependencies `npm install` and run `npm start`.
+Create at the root of your project `.env` file with this variable `API_KEY = <your-newsapi-token>`.
 
 ## Contributing 🍰
 Please make sure to read the [Contributing Guide]() before making a pull request.
