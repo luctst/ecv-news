@@ -55,7 +55,7 @@ module.exports = env => {
 			]
 		}),
 		new EnvironmentPlugin({
-			API_KEY = "18ac21a546b0446fa4659315f42934ff"
+			API_KEY: "18ac21a546b0446fa4659315f42934ff"
 		})
 	]
 
