@@ -6,7 +6,7 @@ const terser = require("terser-webpack-plugin")
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin")
 const webpackPWA = require("webpack-pwa-manifest")
 const webpackDotenv = require("dotenv-webpack");
-import {EnvironmentPlugin} from "webpack";
+const {EnvironmentPlugin} = require("webpack");
 
 module.exports = env => {
 
