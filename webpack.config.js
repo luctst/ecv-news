@@ -5,9 +5,15 @@ const htmlPlugin = require("html-webpack-plugin")
 const terser = require("terser-webpack-plugin")
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin")
 const webpackPWA = require("webpack-pwa-manifest")
-const webpackDotenv = require("dotenv-webpack");
+// const webpackDotenv = require("dotenv-webpack");
 
 module.exports = env => {
+	let webpackDotenv;
+
+	if (env.mode === "development") {
+		webpackDotenv = require("dotenv-webpack");
+	}
+
 	const defaultPugins = [
 		new htmlPlugin({
 			inject: true,
