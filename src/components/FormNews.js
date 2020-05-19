@@ -13,13 +13,8 @@ export default element => {
 			}
 		}).then(result => {
 			if (result.err === null)
-				return talkToApi("/sources", "POST", {
-					headers: {
-						"content-type": "application/json"
-					},
-					body: {
-						news_api_token: process.env.API_KEY
-					}
+				return talkToApi(`https://newsapi.org/v2/sources?apiKey=${process.env.API_KEY}`, "GET", {
+					useCustomRoute: true,
 				}).then(result => render(result));
 
 			element.innerHTML = "";
@@ -76,7 +71,7 @@ export default element => {
 		});
 
 		// Return newspaepper in <select></select>
-		dataApi.data.sources.map(i => {
+		dataApi.sources.map(i => {
 			const option = document.createElement("option");
 
 			option.textContent = i.id;
